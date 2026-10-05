@@ -1,0 +1,745 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> Wakfu Embelli </title>
+</head>
+<body>
+	<style>
+		body {
+			margin         : 0;
+			background     : url( "images/fond.png" ) center center / cover no-repeat;
+			color          : white;
+			position       : relative;
+			padding        : 20px;
+			font-family    : Inter, system-ui, sans-serif;
+			display        : flex;
+			flex-direction : column;
+			align-items    : center;
+		}
+
+		* {
+			box-sizing : border-box;
+		}
+
+		.panel {
+			width           : min( 1000px, calc( 100vw - 80px ) );
+			background      : linear-gradient(180deg, rgba(21, 35, 58, 0.88), rgba(16, 23, 41, 0.65));
+			/* border       : 1px solid rgba(191, 172, 118, 0.18); */
+			backdrop-filter : blur(18px);
+			border-radius   : 24px;
+			padding         : 20px;
+			box-shadow      : 0 24px 80px rgba(0,0,0,0.28);
+			/* height       : 100%; */
+			min-height      : 0;
+			display         : flex;
+			flex-direction  : column;
+
+		}
+		
+		h1, h2 {
+			text-align : center;
+		}
+	</style>
+
+	<h1 class="panel"> Wakfu Embelli </h1>
+	<p class="panel"> Wakfu Embelli est un outil permettant de recréer des cartes Wakfu en meilleure résolution. </p>
+
+	<p class="panel">
+		Un grand merci à Bastien Bassani, créateur de l'extension Eliacube, pour son travail monstre,
+		ainsi que pour la mise à disposition des assets que j'utilise dans cette app.
+	</p>
+
+	<h2 class="panel"> Fonctionnement </h2>
+	<p class="panel">
+		Téléchargez le .zip de l'application (si j'ai la force un jour, je nettoyerai le code et rendrais le tout open source).
+		Vous y trouverez à coté de l'executable des dossiers : <br>
+		• assets                                             : contient les différents assets servant à recomposer les cartes, en HD.
+		Il est possible de jouer avec, pour se faire des cartes originales avec des effets visuels uniques. <br>
+		• parametres : contient plusieurs fichiers de paramétrage. La liste des éléments et leurs icones, la liste des raretés, les différents types de cartes,
+		et les différentes zones de textes.
+		• extensions : c'est là que tout se joue. On placera dedans chaque extention, dans son propre dossier. Pour toute nouvelle extension personnalisée,
+		ajouter une image dans assets/extensions/ en suivant les modèles déjà existants.
+	</p>
+	<p class="panel">
+		Une fois l'application lancée, voilà ce que vous y trouverez <br>
+		<img src="images/apercu.png" alt=""> <br>
+		Vous pouvez y selectionner l'extension et la carte à éditer. Une barre de recherche vous permet de trouver une carte en particulier
+		plus aisément.
+	</p>
+
+	<p class="panel">
+		Navigation
+		<iframe
+			width="560"
+			height="315"
+			src="https://youtu.be/DIrklmFBP90"
+			title="Liste des cartes"
+			frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+			allowfullscreen>
+		</iframe>
+		<iframe
+			width="560"
+			height="315"
+			src="https://youtu.be/0y03SGjqC1s"
+			title="Taille des interfaces"
+			frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+			allowfullscreen>
+		</iframe>
+		<iframe
+			width="560"
+			height="315"
+			src="https://youtu.be/WDq_vvZ-p8Q"
+			title="Vue carte"
+			frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+			allowfullscreen>
+		</iframe>
+	</p>
+
+	<p class="panel">
+		Chaque élément de la carte est modifiable. L'interface d'édition (à droite) est composée de 3 pages : <br>
+		• Les infos principales                                                                             : titre, type, force, niveau, ect <br>
+		• L'effet de la carte <br>
+		• La description de la carte <br>
+		Démo : Éditer la carte <br>
+		<iframe
+			width="560"
+			height="315"
+			src="https://youtu.be/lfEwVlvLLE0"
+			title="Editer carte"
+			frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+			allowfullscreen>
+		</iframe> <br>
+		Démo : Mise en page <br>
+		<iframe
+			width="560"
+			height="315"
+			src="https://youtu.be/FueS3b6_m_0"
+			title="Mise en page"
+			frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+			allowfullscreen>
+		</iframe>
+	</p>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#101729">
+
+	<title>Wakfu Embelli</title>
+
+	<style>
+		:root {
+			--bg-panel: rgba(16, 23, 41, 0.82);
+			--bg-panel-light: rgba(27, 39, 65, 0.72);
+			--border: rgba(255, 255, 255, 0.10);
+
+			--text: #f7f8fc;
+			--text-muted: #c5ccda;
+
+			--accent: #63d6e4;
+			--accent-light: #a4edf4;
+
+			--radius: 22px;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+
+			font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+			color: var(--text);
+			line-height: 1.7;
+
+			background:
+				linear-gradient(
+					rgba(6, 12, 24, 0.35),
+					rgba(6, 12, 24, 0.75)
+				),
+				url("images/fond.png") center / cover fixed no-repeat;
+		}
+
+		/* ---------- Layout ---------- */
+
+		.container {
+			width: min(1100px, calc(100% - 40px));
+			margin: auto;
+			padding: 50px 0 100px;
+		}
+
+		.panel {
+			background:
+				linear-gradient(
+					135deg,
+					var(--bg-panel-light),
+					var(--bg-panel)
+				);
+
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+
+			backdrop-filter: blur(18px);
+			-webkit-backdrop-filter: blur(18px);
+
+			box-shadow:
+				0 25px 60px rgba(0, 0, 0, 0.30),
+				inset 0 1px rgba(255, 255, 255, 0.04);
+
+			padding: 36px;
+			margin-bottom: 24px;
+		}
+
+		/* ---------- Hero ---------- */
+
+		.hero {
+			text-align: center;
+			padding: 70px 40px;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.hero::before {
+			content: "";
+			position: absolute;
+
+			width: 500px;
+			height: 500px;
+
+			top: -350px;
+			left: 50%;
+			transform: translateX(-50%);
+
+			background: var(--accent);
+			border-radius: 50%;
+			filter: blur(100px);
+			opacity: 0.22;
+
+			pointer-events: none;
+		}
+
+		.hero h1 {
+			position: relative;
+			margin: 0;
+
+			font-size: clamp(3rem, 8vw, 6rem);
+			line-height: 1;
+			letter-spacing: -0.05em;
+
+			/* background: linear-gradient(
+				180deg,
+				#ffffff,
+				var(--accent-light)
+			); */
+
+			/* -webkit-background-clip: text;
+			background-clip: text; */
+			/* color: transparent; */
+			color : white;
+		}
+
+		.hero p {
+			position: relative;
+
+			max-width: 700px;
+			margin: 25px auto 0;
+
+			font-size: 1.15rem;
+			color: var(--text-muted);
+		}
+
+		/* ---------- Typography ---------- */
+
+		h2 {
+			margin: 0 0 25px;
+
+			font-size: 2rem;
+			line-height: 1.2;
+
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		/* h2::before {
+			content: "";
+			display: block;
+
+			width: 5px;
+			height: 30px;
+
+			border-radius: 10px;
+			background: var(--accent);
+
+			box-shadow: 0 0 20px rgba(99, 214, 228, 0.5);
+		} */
+
+		h3 {
+			margin-top: 0;
+			color: var(--accent-light);
+		}
+
+		p {
+			margin-top: 0;
+			color: var(--text-muted);
+		}
+
+		strong {
+			color: white;
+		}
+
+		/* ---------- Remerciements ---------- */
+
+		.thanks {
+			text-align: center;
+			font-style: italic;
+		}
+
+		.thanks strong {
+			color: var(--accent-light);
+		}
+
+		/* ---------- Folder cards ---------- */
+
+		.folder-grid {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 16px;
+
+			margin-top: 30px;
+		}
+
+		.folder {
+			padding: 22px;
+
+			border-radius: 16px;
+			border: 1px solid rgba(255,255,255,0.08);
+
+			background: rgba(255,255,255,0.035);
+
+			transition:
+				transform 0.2s ease,
+				background 0.2s ease,
+				border-color 0.2s ease;
+		}
+
+		.folder:hover {
+			transform: translateY(-4px);
+
+			background: rgba(255,255,255,0.07);
+			border-color: rgba(99, 214, 228, 0.3);
+		}
+
+		.folder-icon {
+			font-size: 2rem;
+			margin-bottom: 10px;
+		}
+
+		.folder h3 {
+			margin-bottom: 8px;
+		}
+
+		.folder p {
+			margin: 0;
+			font-size: 0.93rem;
+		}
+
+		/* ---------- Screenshot ---------- */
+
+		.screenshot {
+			display: block;
+
+			width: 100%;
+			height: auto;
+
+			margin-top: 25px;
+
+			/* border-radius: 16px; */
+			/* border: 1px solid var(--border); */
+
+			box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+		}
+
+		/* ---------- Videos ---------- */
+
+		.video-grid {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20px;
+			margin-top: 30px;
+		}
+
+		.video-card {
+			overflow: hidden;
+
+			background: rgba(0,0,0,0.2);
+
+			border: 1px solid var(--border);
+			border-radius: 16px;
+		}
+
+		.video-card h3 {
+			padding: 15px 18px;
+			margin: 0;
+
+			font-size: 1rem;
+			color: white;
+		}
+
+		.video {
+			position: relative;
+			width: 100%;
+			aspect-ratio: 16 / 9;
+
+			background: #05070c;
+		}
+
+		.video iframe {
+			position: absolute;
+			inset: 0;
+
+			width: 100%;
+			height: 100%;
+
+			border: 0;
+		}
+
+		/* ---------- Editor list ---------- */
+
+		.editor-pages {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 15px;
+
+			margin: 25px 0 35px;
+		}
+
+		.editor-page {
+			padding: 20px;
+
+			background: rgba(255,255,255,0.04);
+
+			border-radius: 14px;
+			border: 1px solid var(--border);
+		}
+
+		.editor-page span {
+			display: block;
+
+			margin-bottom: 8px;
+
+			font-size: 0.75rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.12em;
+
+			color: var(--accent);
+		}
+
+		.editor-page strong {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		.editor-page p {
+			margin: 0;
+			font-size: 0.9rem;
+		}
+
+		/* ---------- Footer ---------- */
+
+		footer {
+			text-align: center;
+			padding-top: 20px;
+
+			color: rgba(255,255,255,0.45);
+			font-size: 0.85rem;
+		}
+
+		/* ---------- Responsive ---------- */
+
+		@media (max-width: 800px) {
+			.container {
+				width: min(100% - 24px, 1100px);
+				padding-top: 20px;
+			}
+
+			.panel {
+				padding: 24px;
+				border-radius: 18px;
+			}
+
+			.hero {
+				padding: 55px 20px;
+			}
+
+			.folder-grid,
+			.editor-pages,
+			.video-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<main class="container">
+
+		<!-- HERO -->
+		<header class="panel hero">
+			<h1>Wakfu Embelli</h1>
+
+			<p>
+				Un outil permettant de recréer et personnaliser
+				les cartes Wakfu en meilleure résolution.
+			</p>
+		</header>
+
+
+		<!-- REMERCIEMENTS -->
+		<section class="panel thanks">
+			<p>
+				Un grand merci à <strong>Bastien Bassani</strong>,
+				créateur de l'extension <strong>Eliacube</strong>,
+				pour son travail monstre ainsi que pour la mise à disposition
+				des assets utilisés dans cette application.
+			</p>
+		</section>
+
+
+		<!-- FONCTIONNEMENT -->
+		<section class="panel">
+
+			<h2>Fonctionnement</h2>
+
+			<p>
+				Téléchargez le <strong>.zip</strong> de l'application.
+				Vous trouverez, à côté de l'exécutable, plusieurs dossiers
+				permettant de personnaliser son fonctionnement.
+			</p>
+
+			<div class="folder-grid">
+
+				<div class="folder">
+					<!-- <div class="folder-icon">🎨</div> -->
+
+					<h3>assets</h3>
+
+					<p>
+						Contient les différents éléments graphiques utilisés
+						pour recomposer les cartes en HD.
+						Vous pouvez les modifier pour créer vos propres cartes
+						et effets visuels.
+					</p>
+				</div>
+
+				<div class="folder">
+					<!-- <div class="folder-icon">⚙️</div> -->
+
+					<h3>parametres</h3>
+
+					<p>
+						Contient les fichiers de configuration :
+						éléments, icônes, raretés, types de cartes
+						et différentes zones de texte.
+					</p>
+				</div>
+
+				<div class="folder">
+					<!-- <div class="folder-icon">📦</div> -->
+
+					<h3>extensions</h3>
+
+					<p>
+						Chaque extension possède son propre dossier.
+						Pour une extension personnalisée, ajoutez également
+						son image dans <strong>assets/extensions/</strong>
+						en suivant les modèles existants.
+					</p>
+				</div>
+
+			</div>
+
+		</section>
+
+
+		<!-- INTERFACE -->
+		<section class="panel">
+
+			<h2>L'interface</h2>
+
+			<p>
+				Une fois l'application lancée, vous pouvez sélectionner
+				l'extension puis la carte que vous souhaitez éditer.
+				Une barre de recherche permet de retrouver rapidement
+				une carte en particulier.
+			</p>
+
+			<img
+				class="screenshot"
+				src="images/apercu.png"
+				alt="Aperçu de l'interface de Wakfu Embelli"
+			>
+
+		</section>
+
+
+		<!-- NAVIGATION -->
+		<section class="panel">
+
+			<h2>Navigation</h2>
+
+			<p>
+				Quelques démonstrations des principales fonctionnalités
+				de navigation de l'application.
+			</p>
+
+			<div class="video-grid">
+
+				<div class="video-card">
+					<h3>Liste des cartes</h3>
+
+					<div class="video">
+						<iframe
+							src="https://youtu.be/DIrklmFBP90"
+							title="Liste des cartes"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen>
+						</iframe>
+					</div>
+				</div>
+
+				<div class="video-card">
+					<h3>Taille des interfaces</h3>
+
+					<div class="video">
+						<iframe
+							src="https://youtu.be/0y03SGjqC1s"
+							title="Taille des interfaces"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen>
+						</iframe>
+					</div>
+				</div>
+
+				<div class="video-card">
+					<h3>Vue carte</h3>
+
+					<div class="video">
+						<iframe
+							src="youtu.be/WDq_vvZ-p8Q"
+							title="Vue carte"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen>
+						</iframe>
+					</div>
+				</div>
+
+			</div>
+
+		</section>
+
+
+		<!-- EDITION -->
+		<section class="panel">
+
+			<h2>Édition d'une carte</h2>
+
+			<p>
+				Chaque élément de la carte est modifiable.
+				L'interface d'édition située à droite est divisée
+				en trois pages.
+			</p>
+
+			<div class="editor-pages">
+
+				<div class="editor-page">
+					<span>Page 01</span>
+
+					<strong>Informations principales</strong>
+
+					<p>
+						Titre, type, force, niveau et autres informations
+						générales de la carte.
+					</p>
+				</div>
+
+				<div class="editor-page">
+					<span>Page 02</span>
+
+					<strong>Effet de la carte</strong>
+
+					<p>
+						Modification et mise en forme des différents effets
+						de la carte.
+					</p>
+				</div>
+
+				<div class="editor-page">
+					<span>Page 03</span>
+
+					<strong>Description</strong>
+
+					<p>
+						Modification du texte descriptif et de sa mise en page.
+					</p>
+				</div>
+
+			</div>
+
+
+			<div class="video-grid">
+
+				<div class="video-card">
+					<h3>Éditer une carte</h3>
+
+					<div class="video">
+						<iframe
+							src="https://youtu.be/lfEwVlvLLE0"
+							title="Éditer une carte"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen>
+						</iframe>
+					</div>
+				</div>
+
+				<div class="video-card">
+					<h3>Mise en page</h3>
+
+					<div class="video">
+						<iframe
+							src="https://youtu.be/FueS3b6_m_0"
+							title="Mise en page"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen>
+						</iframe>
+					</div>
+				</div>
+
+			</div>
+
+		</section>
+
+	</main>
+
+</body>
+</html>
